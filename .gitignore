@@ -8,3 +8,4 @@ results/
 scikit-learn/
 joblib/
 scikit-learn + onnx/hooks/pre-applypatch.sample
+sklearn-onnx

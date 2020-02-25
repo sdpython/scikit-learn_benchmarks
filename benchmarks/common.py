@@ -142,6 +142,8 @@ class Estimator(ABC):
 
         if Benchmark.bench_onnx:
             self._setup_onnx()
+        else:
+            raise NotImplementedError()
 
         self.make_scorers()
 
@@ -156,6 +158,8 @@ class Estimator(ABC):
             self.estimator_onnx = to_onnx(
                 self.estimator, self.X[:1],
                 target_opset=ONNX_TARGET_OPSET)
+        if self.estimator_onnx is None:
+            raise RuntimeError("estimator_onnx cannot be None")
 
     def _setup_onnx(self):
         try:
@@ -177,9 +181,12 @@ class Estimator(ABC):
                 return
             try:
                 self.estimator_onnx_pyrt = OnnxInference(
-                    self.estimator_onnx)
+                    self.estimator_onnx, runtime="python_compiled")
             except RuntimeError as e:
                 self.estimator_onnx_pyrt = None
+        else:
+            self.estimator_onnx_ort = None
+            self.estimator_onnx_pyrt = None
 
     def time_fit(self, *args):
         self.estimator.fit(self.X, self.y)
@@ -262,36 +269,27 @@ class Predictor(ABC):
         def peakmem_astype32(self, *args):
             if self.estimator_onnx_ort is not None:
                 return self.X.astype(np.float32, copy=False)
-            else:
-                raise RuntimeError("estimator_onnx_ort could not be created.")
+            raise RuntimeError("estimator_onnx_ort could not be created.")
 
         def time_predict_ort(self, *args):
             if self.estimator_onnx_ort is not None:
                 self.estimator_onnx_ort.run(
                     None, {'X': self.X32})[0]
-            else:
-                raise RuntimeError("estimator_onnx_ort could not be created.")
 
         def peakmem_predict_ort(self, *args):
             if self.estimator_onnx_ort is not None:
                 self.estimator_onnx_ort.run(
                     None, {'X': self.X32})[0]
-            else:
-                raise RuntimeError("estimator_onnx_ort could not be created.")
 
         def time_predict_pyrt(self, *args):
             if self.estimator_onnx_pyrt is not None:
                 self.estimator_onnx_pyrt.run(
                     {'X': self.X32})
-            else:
-                raise RuntimeError("estimator_onnx_pyrt could not be created.")
 
         def peakmem_predict_pyrt(self, *args):
             if self.estimator_onnx_pyrt is not None:
                 self.estimator_onnx_pyrt.run(
                     {'X': self.X32})
-            else:
-                raise RuntimeError("estimator_onnx_pyrt could not be created.")
 
 
 class Classifier(Predictor, ABC):
