@@ -72,17 +72,17 @@
     // followed by the pip installed packages).
     //
     "matrix": {
-        "cython": [],
-        "jinja2": [],
-        "joblib": [],
-        "numpy": [],
-        "onnx": [],
-        "onnxruntime": [],
-        "pandas": [],
-        "Pillow": [],
-	    "scipy": [],
-        "skl2onnx": [],
-        "scikit-learn": [],
+        "cython": ['..'],
+        "jinja2": ['..'],
+        "joblib": ['..'],
+        "numpy": ['..'],
+        "onnx": ['..'],
+        "onnxruntime": ['..'],
+        "pandas": ['..'],
+        "Pillow": ['..'],
+	    "scipy": ['..'],
+        "skl2onnx": ['..'],
+        "scikit-learn": ['..'],
     },
 
     // Combinations of libraries/python versions can be excluded/included
