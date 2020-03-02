@@ -2,7 +2,7 @@
     "version": 1,
     "project": "sklearn-onnx",
     "project_url": "http://www.xavierdupre.fr/app/sklearn-onnx/helpsphinx/index.html",
-    "repo": "https://github.com/sdpython/sklearn-onnx.git@jenkins",
+    "repo": "https://github.com/sdpython/sklearn-onnx.git",
     "environment_type": "virtualenv",
     "pythons": ["3.7"],
     "matrix": {
