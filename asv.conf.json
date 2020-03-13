@@ -11,7 +11,7 @@
         "joblib": [],
         "numpy": [],
         "onnx": [],
-        "onnxruntime_dnnl": [],
+        "onnxruntime_dnnl": ["http://localhost:8067/simple/"],
         "pandas": [],
         "Pillow": [],
 	    "scipy": [],
