@@ -11,8 +11,8 @@ class PCA_bench(Benchmark, Estimator, Transformer):
     Benchmarks for PCA.
     """
 
-    param_names = ['svd_solver']
-    params = (['full', 'arpack', 'randomized'],)
+    param_names = ['svd_solver', 'runtime']
+    params = (['full', 'arpack', 'randomized'], ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
@@ -21,7 +21,7 @@ class PCA_bench(Benchmark, Estimator, Transformer):
         super().setup_cache()
 
     def setup_cache_(self, params):
-        svd_solver, = params
+        svd_solver, runtime = params
 
         data = _mnist_dataset()
 
@@ -29,7 +29,7 @@ class PCA_bench(Benchmark, Estimator, Transformer):
                         svd_solver=svd_solver,
                         random_state=0)
 
-        return data, estimator
+        return data, estimator, runtime
 
     def make_scorers(self):
         make_pca_scorers(self)
@@ -40,8 +40,8 @@ class DictionaryLearning_bench(Benchmark, Estimator, Transformer):
     Benchmarks for DictionaryLearning.
     """
 
-    param_names = ['fit_algorithm', 'n_jobs']
-    params = (['lars', 'cd'], Benchmark.n_jobs_vals)
+    param_names = ['fit_algorithm', 'n_jobs', 'runtime']
+    params = (['lars', 'cd'], Benchmark.n_jobs_vals, ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
@@ -50,7 +50,7 @@ class DictionaryLearning_bench(Benchmark, Estimator, Transformer):
         super().setup_cache()
 
     def setup_cache_(self, params):
-        fit_algorithm, n_jobs = params
+        fit_algorithm, n_jobs, runtime = params
 
         data = _olivetti_faces_dataset()
 
@@ -62,7 +62,7 @@ class DictionaryLearning_bench(Benchmark, Estimator, Transformer):
                                        random_state=0,
                                        n_jobs=n_jobs)
 
-        return data, estimator
+        return data, estimator, runtime
 
     def make_scorers(self):
         make_dict_learning_scorers(self)
@@ -73,8 +73,8 @@ class MiniBatchDictionaryLearning_bench(Benchmark, Estimator, Transformer):
     Benchmarks for MiniBatchDictionaryLearning
     """
 
-    param_names = ['fit_algorithm', 'n_jobs']
-    params = (['lars', 'cd'], Benchmark.n_jobs_vals)
+    param_names = ['fit_algorithm', 'n_jobs', 'runtime']
+    params = (['lars', 'cd'], Benchmark.n_jobs_vals, ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
@@ -83,7 +83,7 @@ class MiniBatchDictionaryLearning_bench(Benchmark, Estimator, Transformer):
         super().setup_cache()
 
     def setup_cache_(self, params):
-        fit_algorithm, n_jobs = params
+        fit_algorithm, n_jobs, runtime = params
 
         data = _olivetti_faces_dataset()
 
@@ -94,7 +94,7 @@ class MiniBatchDictionaryLearning_bench(Benchmark, Estimator, Transformer):
                                                 random_state=0,
                                                 n_jobs=n_jobs)
 
-        return data, estimator
+        return data, estimator, runtime
 
     def make_scorers(self):
         make_dict_learning_scorers(self)

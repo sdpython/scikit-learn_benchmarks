@@ -13,14 +13,14 @@ class CrossValidation_bench(Benchmark):
 
     timeout = 20000
 
-    param_names = ['n_jobs']
-    params = (Benchmark.n_jobs_vals,)
+    param_names = ['n_jobs', 'runtime']
+    params = (Benchmark.n_jobs_vals, ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
 
     def setup(self, *params):
-        n_jobs, = params
+        n_jobs, runtime = params
 
         data = _synth_classification_dataset(n_samples=50000, n_features=100)
         self.X, self.X_val, self.y, self.y_val = data
@@ -52,8 +52,8 @@ class GridSearch_bench(Benchmark, Estimator, Predictor):
 
     timeout = 20000
 
-    param_names = ['n_jobs']
-    params = (Benchmark.n_jobs_vals,)
+    param_names = ['n_jobs', 'runtime']
+    params = (Benchmark.n_jobs_vals, ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
@@ -80,9 +80,7 @@ class GridSearch_bench(Benchmark, Estimator, Predictor):
         param_grid = {'n_estimators': n_estimators_list,
                       'max_depth': max_depth_list,
                       'max_features': max_features_list}
-
         estimator = GridSearchCV(clf, param_grid, n_jobs=n_jobs, cv=4)
-
         return data, estimator
 
     def make_scorers(self):

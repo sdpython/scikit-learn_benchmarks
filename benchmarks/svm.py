@@ -8,8 +8,8 @@ from .utils import optimal_cache_size, make_gen_classif_scorers
 class SVC_bench(Benchmark, Estimator, Classifier):
     """Benchmarks for SVC."""
 
-    param_names = ['kernel']
-    params = (['linear', 'poly', 'rbf', 'sigmoid'],)
+    param_names = ['kernel', 'runtime']
+    params = (['linear', 'poly', 'rbf', 'sigmoid'], ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
@@ -18,7 +18,7 @@ class SVC_bench(Benchmark, Estimator, Classifier):
         super().setup_cache()
 
     def setup_cache_(self, params):
-        kernel, = params
+        kernel, runtime = params
 
         data = _synth_classification_dataset()
 
@@ -31,7 +31,7 @@ class SVC_bench(Benchmark, Estimator, Classifier):
                         shrinking=True,
                         gamma='scale')
 
-        return data, estimator
+        return data, estimator, runtime
 
     def make_scorers(self):
         make_gen_classif_scorers(self)

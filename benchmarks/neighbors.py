@@ -10,10 +10,11 @@ class KNeighborsClassifier_bench(Benchmark, Estimator, Classifier):
     Benchmarks for KNeighborsClassifier.
     """
 
-    param_names = ['algorithm', 'dimension', 'n_jobs']
+    param_names = ['algorithm', 'dimension', 'n_jobs', 'runtime']
     params = (['brute', 'kd_tree', 'ball_tree'],
               ['low', 'high'],
-              Benchmark.n_jobs_vals)
+              Benchmark.n_jobs_vals,
+              ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
@@ -22,7 +23,7 @@ class KNeighborsClassifier_bench(Benchmark, Estimator, Classifier):
         super().setup_cache()
 
     def setup_cache_(self, params):
-        algorithm, dimension, n_jobs = params
+        algorithm, dimension, n_jobs, runtime = params
 
         if Benchmark.data_size == 'large':
             n_components = 40 if dimension == 'low' else 200
@@ -33,7 +34,7 @@ class KNeighborsClassifier_bench(Benchmark, Estimator, Classifier):
 
         estimator = KNeighborsClassifier(algorithm=algorithm,
                                          n_jobs=n_jobs)
-        return data, estimator
+        return data, estimator, runtime
 
     def _setup_to_onnx(self):
         from skl2onnx import to_onnx

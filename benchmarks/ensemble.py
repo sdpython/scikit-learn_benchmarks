@@ -11,8 +11,9 @@ class RandomForestClassifier_bench(Benchmark, Estimator, Classifier):
     Benchmarks for RandomForestClassifier.
     """
 
-    param_names = ['representation', 'n_jobs']
-    params = (['dense', 'sparse'], Benchmark.n_jobs_vals)
+    param_names = ['representation', 'n_jobs', 'runtime']
+    params = (['dense', 'sparse'], Benchmark.n_jobs_vals,
+              ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
@@ -21,7 +22,7 @@ class RandomForestClassifier_bench(Benchmark, Estimator, Classifier):
         super().setup_cache()
 
     def setup_cache_(self, params):
-        representation, n_jobs = params
+        representation, n_jobs, runtime = params
 
         n_estimators = 500 if Benchmark.data_size == 'large' else 100
 
@@ -36,7 +37,7 @@ class RandomForestClassifier_bench(Benchmark, Estimator, Classifier):
                                            n_jobs=n_jobs,
                                            random_state=0)
 
-        return data, estimator
+        return data, estimator, runtime
 
     def make_scorers(self):
         make_gen_classif_scorers(self)
@@ -47,8 +48,8 @@ class GradientBoostingClassifier_bench(Benchmark, Estimator, Classifier):
     Benchmarks for GradientBoostingClassifier.
     """
 
-    param_names = ['representation']
-    params = (['dense', 'sparse'],)
+    param_names = ['representation', 'runtime']
+    params = (['dense', 'sparse'], ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
@@ -57,7 +58,7 @@ class GradientBoostingClassifier_bench(Benchmark, Estimator, Classifier):
         super().setup_cache()
 
     def setup_cache_(self, params):
-        representation, = params
+        representation, runtime = params
 
         n_estimators = 100 if Benchmark.data_size == 'large' else 10
 
@@ -71,7 +72,7 @@ class GradientBoostingClassifier_bench(Benchmark, Estimator, Classifier):
                                                subsample=0.5,
                                                random_state=0)
 
-        return data, estimator
+        return data, estimator, runtime
 
     def make_scorers(self):
         make_gen_classif_scorers(self)

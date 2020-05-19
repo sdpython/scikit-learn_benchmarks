@@ -9,8 +9,8 @@ class TSNE_bench(Benchmark, Estimator):
     Benchmarks for t-SNE.
     """
 
-    param_names = ['method']
-    params = (['exact', 'barnes_hut'],)
+    param_names = ['method', 'runtime']
+    params = (['exact', 'barnes_hut'], ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
@@ -19,15 +19,12 @@ class TSNE_bench(Benchmark, Estimator):
         super().setup_cache()
 
     def setup_cache_(self, params):
-        method, = params
+        method, runtime = params
 
         n_samples = 500 if method == 'exact' else None
-
         data = _digits_dataset(n_samples=n_samples)
-
         estimator = TSNE(random_state=0, method=method)
-
-        return data, estimator
+        return data, estimator, runtime
 
     def make_scorers(self):
         self.train_scorer = lambda _, __: self.estimator.kl_divergence_

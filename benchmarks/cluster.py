@@ -14,8 +14,8 @@ class KMeans_bench(Benchmark, Estimator, Predictor, Transformer):
     Benchmarks for KMeans.
     """
 
-    param_names = ['representation', 'algorithm', 'n_jobs']
-    params = (['dense', 'sparse'], ['full', 'elkan'], Benchmark.n_jobs_vals)
+    param_names = ['representation', 'algorithm', 'runtime']
+    params = (['dense', 'sparse'], ['full', 'elkan'], ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
@@ -24,7 +24,10 @@ class KMeans_bench(Benchmark, Estimator, Predictor, Transformer):
         super().setup_cache()
 
     def setup_cache_(self, params):
-        representation, algorithm, n_jobs = params
+        representation, algorithm, runtime = params
+        if runtime != 'skl':
+            raise RuntimeError(
+                "No need to cache anything with another runtime that skl.")
 
         if representation == 'sparse' and algorithm == 'elkan':
             return
@@ -50,13 +53,12 @@ class KMeans_bench(Benchmark, Estimator, Predictor, Transformer):
                            init='random',
                            max_iter=30,
                            tol=1e-16,
-                           n_jobs=n_jobs,
                            random_state=0)
 
-        return data, estimator
+        return data, estimator, runtime
 
     def setup_(self, params):
-        representation, algorithm, n_jobs = params
+        representation, algorithm, runtime = params
 
         if representation == 'sparse' and algorithm == 'elkan':
             raise NotImplementedError
@@ -77,8 +79,8 @@ class KMeansPlusPlus_bench(Benchmark):
     Benchmarks for k-means++ init.
     """
 
-    param_names = ['representation']
-    params = (['dense', 'sparse'],)
+    param_names = ['representation', 'algorithm', 'runtime']
+    params = (['dense', 'sparse'], ['full', 'elkan'], ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True

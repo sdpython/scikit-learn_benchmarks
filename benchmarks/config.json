@@ -25,5 +25,11 @@
     "bench_predict": true,
     "bench_predictproba": true,
     "bench_transform": true,
-    "bench_onnx": true
+    "bench_onnx": true,
+
+    // prediction runtimes
+    // "skl": scikit-learn,
+    // "ort": onnxruntime,
+    // "pyrt": python runtime,
+    "runtimes": ["skl", "ort", "pyrt"]
 }

@@ -9,16 +9,16 @@ class PairwiseDistances_bench(Benchmark):
     Benchmarks for pairwise distances.
     """
 
-    param_names = ['representation', 'metric', 'n_jobs']
+    param_names = ['representation', 'metric', 'n_jobs', 'runtime']
     params = (['dense', 'sparse'],
               ['cosine', 'euclidean', 'manhattan', 'correlation'],
-              Benchmark.n_jobs_vals)
+              Benchmark.n_jobs_vals, ['skl', 'ort', 'pyrt'])
 
     def is_benchmark(self):
         return True
 
     def setup(self, *params):
-        representation, metric, n_jobs = params
+        representation, metric, n_jobs, runtime = params
 
         if representation == 'sparse' and metric == 'correlation':
             raise NotImplementedError

@@ -11,7 +11,7 @@ class TestLogisticRegression_bench(unittest.TestCase):
     def setUpClass(cls):
         cls.bench = LogisticRegression_bench()
         cls.bench.setup_cache()
-        cls.bench.setup('dense', 'lbfgs', 1)
+        cls.bench.setup('dense', 'lbfgs', 1, 'skl')
 
     def test_setup(self):
         self.assertFalse(self.bench is None)
@@ -23,35 +23,35 @@ class TestLogisticRegression_bench(unittest.TestCase):
 
     def test_track_test_score(self):
         bench = self.bench
-        s1 = bench.track_test_score_skl()
-        s2 = bench.track_test_score_ort()
-        s3 = bench.track_test_score_pyrt()
+        s1 = bench.track_test_score('dense', 'lbfgs', 1, 'skl')
+        s2 = bench.track_test_score('dense', 'lbfgs', 1, 'skl')
+        s3 = bench.track_test_score('dense', 'lbfgs', 1, 'skl')
         self.assertTrue(abs(s1 - s2) < 1e-7)
         self.assertTrue(abs(s1 - s3) < 1e-7)
 
     def test_time_predict(self):
         bench = self.bench
-        bench.time_predict_skl()
-        bench.time_predict_ort()
-        bench.time_predict_pyrt()
-
+        bench.time_predict('dense', 'lbfgs', 1, 'skl')
+        bench.time_predict('dense', 'lbfgs', 1, 'ort')
+        bench.time_predict('dense', 'lbfgs', 1, 'pyrt')
+        
     def test_time_predictproba(self):
         bench = self.bench
-        bench.time_predictproba_skl()
-        bench.time_predictproba_ort()
-        bench.time_predictproba_pyrt()
+        bench.time_predictproba('dense', 'lbfgs', 1, 'skl')
+        bench.time_predictproba('dense', 'lbfgs', 1, 'ort')
+        bench.time_predictproba('dense', 'lbfgs', 1, 'pyrt')
 
     def test_peakmem_predict(self):
         bench = self.bench
-        bench.peakmem_predict_skl()
-        bench.peakmem_predict_ort()
-        bench.peakmem_predict_pyrt()
+        bench.time_predict('dense', 'lbfgs', 1, 'skl')
+        bench.time_predict('dense', 'lbfgs', 1, 'ort')
+        bench.time_predict('dense', 'lbfgs', 1, 'pyrt')
 
     def test_peakmem_predictproba(self):
         bench = self.bench
-        bench.peakmem_predictproba_skl()
-        bench.peakmem_predictproba_ort()
-        bench.peakmem_predictproba_pyrt()
+        bench.time_predictproba('dense', 'lbfgs', 1, 'skl')
+        bench.time_predictproba('dense', 'lbfgs', 1, 'ort')
+        bench.time_predictproba('dense', 'lbfgs', 1, 'pyrt')
 
 
 if __name__ == "__main__":
