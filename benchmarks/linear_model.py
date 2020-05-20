@@ -88,7 +88,7 @@ class Ridge_bench(Benchmark, Estimator, Predictor):
         return data, estimator, runtime
 
     def setup_(self, params):
-        representation, solver = params
+        representation, solver, runtime = params
 
         if representation == 'sparse' and solver == 'svd':
             raise NotImplementedError
@@ -238,7 +238,7 @@ class Lasso_bench(Benchmark, Estimator, Predictor):
         return data, estimator, runtime
 
     def setup_(self, params):
-        representation, precompute = params
+        representation, precompute, runtime = params
 
         if representation == 'sparse' and precompute is False:
             raise NotImplementedError

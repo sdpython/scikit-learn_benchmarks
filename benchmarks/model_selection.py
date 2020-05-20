@@ -62,7 +62,7 @@ class GridSearch_bench(Benchmark, Estimator, Predictor):
         super().setup_cache()
 
     def setup_cache_(self, params):
-        n_jobs, = params
+        n_jobs, runtime = params
 
         data = _synth_classification_dataset(n_samples=10000, n_features=100)
 
@@ -81,7 +81,7 @@ class GridSearch_bench(Benchmark, Estimator, Predictor):
                       'max_depth': max_depth_list,
                       'max_features': max_features_list}
         estimator = GridSearchCV(clf, param_grid, n_jobs=n_jobs, cv=4)
-        return data, estimator
+        return data, estimator, runtime
 
     def make_scorers(self):
         make_gen_classif_scorers(self)
