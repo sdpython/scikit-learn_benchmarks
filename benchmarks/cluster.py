@@ -86,7 +86,7 @@ class KMeansPlusPlus_bench(Benchmark):
         return True
 
     def setup(self, *params):
-        representation, = params
+        representation, algorithm, runtime = params
 
         if representation == 'sparse':
             data = _20newsgroups_highdim_dataset(ngrams=(1, 2))
