@@ -29,7 +29,8 @@ class SVC_bench(Benchmark, Estimator, Classifier):
                         kernel=kernel,
                         random_state=0,
                         shrinking=True,
-                        gamma='scale')
+                        gamma='scale',
+                        probability=True)
 
         return data, estimator, runtime
 

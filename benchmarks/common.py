@@ -346,8 +346,8 @@ class Transformer(ABC):
             else:
                 raise ValueError("Unexpected runtime '{}'.".format(runtime))
 
-        def peakmem_transform_ort(self, *args):
+        def peakmem_transform(self, *args):
             self._common_transform_(*args)
 
-        def time_transform_pyrt(self, *args):
+        def time_transform(self, *args):
             self._common_transform_(*args)
